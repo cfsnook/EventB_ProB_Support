@@ -1,12 +1,10 @@
-package ac.soton.eventb.probsupport.handlers;
+package ac.soton.eventb.probsupport;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eventb.core.IMachineRoot;
 
-import ac.soton.eventb.probsupport.Activator;
-import ac.soton.eventb.probsupport.IAnimationParticipant;
 import de.prob.core.Animator;
 import de.prob.core.command.LoadEventBModelCommand;
 import de.prob.exceptions.ProBException;

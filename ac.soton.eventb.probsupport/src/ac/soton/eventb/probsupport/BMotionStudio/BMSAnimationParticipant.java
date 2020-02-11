@@ -32,6 +32,7 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 
 	private static final String BMOTION_STUDIO_EXT = "bmso";
 	
+	//remember the editors we run at start, so we can stop them later
 	private Set<BMotionStudioEditor> bmsEditors = new HashSet<BMotionStudioEditor>();
 	
 	@Override
@@ -74,40 +75,6 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 		}
 		bmsEditors.clear();
 	}
-
-	
-//	private Set<IFile> getBMSFiles(IMachineRoot mchRoot) {
-//		IProject project = mchRoot.getRodinProject().getProject();
-//		String mchName = mchRoot.getComponentName();
-//		// Find all the  bmsFiles of the machine
-//		// (these must come from the editors as each editor has a different local copy)
-//		Set<IFile> bmsFiles = new HashSet<IFile>();
-//		for (IWorkbenchPage page : PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPages()) {   //   activeWorkbenchWindow.getPages()) {
-//			for (IEditorReference editorRef : page.getEditorReferences()) {
-//				IEditorPart editor = editorRef.getEditor(true);
-//	    		//look for BMotionStudio editors on the same machine
-//	    		if (editor instanceof BMotionStudioEditor) {
-//	    			BMotionStudioEditor bmsEditor = (BMotionStudioEditor) editor;
-//	    			Object bmspf = bmsEditor.getVisualization().getProjectFile();
-//	    			if (bmspf instanceof IFile && BMOTION_STUDIO_EXT.equals(((IFile)bmspf).getFileExtension())){
-//		    			String bmsMachineName = bmsEditor.getVisualization().getMachineName();
-//		    			IProject bmsproject = ((IFile)bmspf).getProject();
-//	    				if (bmsMachineName.startsWith(mchName) && project.equals(bmsproject)){
-//							if (!bmsFiles.contains(bmspf)) {
-//								bmsFiles.add(((IFile)bmspf));
-//								if (runBMotionStudio(bmsEditor, (IFile)bmspf)) {
-//									bmsEditors.add(bmsEditor);
-//								}
-//							}
-//							
-//	    				}
-//	    			}
-//		    	}
-//			}
-//		}
-//		return bmsFiles;
-//	}
-	
 	
 	/**
 	 * 

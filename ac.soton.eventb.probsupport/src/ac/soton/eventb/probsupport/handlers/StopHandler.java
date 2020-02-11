@@ -20,6 +20,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eventb.core.IMachineRoot;
 
+import ac.soton.eventb.probsupport.AnimationManager;
+
 public class StopHandler extends AbstractHandler implements IHandler {
 
 //	@Override
