@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ac.soton.eventb.probsupport.feature"
+      label="%featureName"
+      version="0.0.0.qualifier"
+      provider-name="%featureVendor"
+      license-feature="org.rodinp.license"
+      license-feature-version="1.0.0.release">
+
+   <description>
+      %featureDescription
+   </description>
+
+   <copyright>
+      %featureCopyright
+   </copyright>
+
+   <url>
+      <update label="%updateSiteName" url="http://rodin-b-sharp.sourceforge.net/updates"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.resources" version="3.9.1" match="compatible"/>
+      <import plugin="org.eclipse.ui" version="3.109.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.13.0" match="compatible"/>
+      <import plugin="org.eventb.emf.core"/>
+      <import plugin="org.eventb.core" version="3.3.1" match="greaterOrEqual"/>
+      <import plugin="org.eventb.emf.persistence"/>
+      <import plugin="org.rodinp.core" version="1.7.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.common" version="2.13.0" match="greaterOrEqual"/>
+      <import plugin="de.prob.core" version="9.4.4" match="greaterOrEqual"/>
+      <import plugin="de.bmotionstudio.gef.editor"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.ui.ide" version="3.13.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.expressions"/>
+   </requires>
+
+   <plugin
+         id="ac.soton.eventb.probsupport"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
