@@ -145,5 +145,10 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
             visualization.setIsRunning(true);
             return visualization;
     }
+
+	@Override
+	public void updateAnimation(IMachineRoot mchRoot) {
+		//do nothing as BMS does its own listening
+	}
     
 }

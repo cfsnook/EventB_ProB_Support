@@ -19,4 +19,6 @@ public interface IAnimationParticipant {
 	
 	void stopAnimating(IMachineRoot mchRoot);
 	
+	void updateAnimation(IMachineRoot mchRoot);
+	
 }

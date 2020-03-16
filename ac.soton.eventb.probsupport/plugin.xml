@@ -120,6 +120,14 @@
          </command>
       </menuContribution>
    </extension>
+<!-- listen to ProB animations  - scenario checker  -->  
+   <extension
+         point="de.prob.core.animation">
+      <listener
+            class="ac.soton.eventb.probsupport.AnimationListener">
+      </listener>
+   </extension>
+<!-- end of listen to ProB animations  - scenario checker --> 
    
 <!-- end of new menu handler -->
 
