@@ -22,23 +22,32 @@ import org.eventb.core.IMachineRoot;
 
 import ac.soton.eventb.probsupport.AnimationManager;
 
-public class StartHandler extends AbstractHandler implements IHandler {
+public class AnimationStartHandler extends AbstractHandler implements IHandler {
 
-//	@Override
-//	public void addHandlerListener(IHandlerListener handlerListener) {
-//		// TODO Auto-generated method stub
-//
-//	}
-//
-//	@Override
-//	public void dispose() {
-//		// TODO Auto-generated method stub
-//
-//	}
-
+	/* (non-Javadoc)
+	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
+	 */
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public final Object execute(ExecutionEvent event) throws ExecutionException {
 		
+		IMachineRoot mchRoot = getRoot(event);
+		
+		// If a machine is selected, start the animations for it
+		if (mchRoot != null) {
+			AnimationManager.startAnimation(mchRoot);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Client handlers can override this to provide other ways to obtain a machine from whatever is selected
+	 * 
+	 * @param event
+	 * @return
+	 * @throws ExecutionException
+	 */
+	protected IMachineRoot getRoot(ExecutionEvent event) throws ExecutionException {
 		// Get the selected Event-B machine
 		ISelection selection = HandlerUtil.getCurrentSelectionChecked(event);
 		IMachineRoot mchRoot = null;
@@ -51,31 +60,7 @@ public class StartHandler extends AbstractHandler implements IHandler {
 				}
 			}
 		}
-		
-		// If a machine is selected, start the animations for it
-		if (mchRoot != null) {
-			AnimationManager.startAnimation(mchRoot);
-		}
-
-		return null;
+		return mchRoot;
 	}
-
-//	@Override
-//	public boolean isEnabled() {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean isHandled() {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public void removeHandlerListener(IHandlerListener handlerListener) {
-//		// TODO Auto-generated method stub
-//
-//	}
 
 }
