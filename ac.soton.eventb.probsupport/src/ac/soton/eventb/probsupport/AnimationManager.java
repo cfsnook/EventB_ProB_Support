@@ -102,6 +102,16 @@ public class AnimationManager {
 			startAnimation(mchRoot);
 		}
 	}
+	
+	/**
+	 * Checks whether the given machine root is being animated
+	 * 
+	 * @param mchRoot
+	 * @return
+	 */
+	public static boolean isRunning(IMachineRoot mchRoot) {
+		return  mchRoot!=null && mchRoot.equals(AnimationManager.mchRoot);
+	}
 
 	/**
 	 * This is called by the Animation Listener when ProB has a state change.
@@ -241,5 +251,6 @@ public class AnimationManager {
 		}
 		return history;
 	}
+
 
 }
