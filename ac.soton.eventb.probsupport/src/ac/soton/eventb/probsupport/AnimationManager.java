@@ -28,7 +28,6 @@ import de.prob.core.command.ExecuteOperationCommand;
 import de.prob.core.command.LoadEventBModelCommand;
 import de.prob.core.domainobjects.History;
 import de.prob.core.domainobjects.HistoryItem;
-import de.prob.core.domainobjects.MachineDescription;
 import de.prob.core.domainobjects.Operation;
 import de.prob.core.domainobjects.State;
 import de.prob.core.domainobjects.Variable;
@@ -48,32 +47,32 @@ public class AnimationManager {
 	 * @param mchRoot
 	 */
 	public static void startAnimation(IMachineRoot mchRoot) {
-		if (AnimationManager.mchRoot!=null) return;
-		try {
-			//refresh project in workspace (avoids ProB errors)
-			IProject project = mchRoot.getRodinProject().getProject();
-			project.refreshLocal(IResource.DEPTH_ONE, null);
-			
-			// start ProB animation
-			System.out.println("Starting ProB for " + mchRoot.getHandleIdentifier());
-			LoadEventBModelCommand.load(Animator.getAnimator(), mchRoot);
-			
-		} catch (CoreException e) {  	//refreshLocal
-			e.printStackTrace();
-			Activator.logError("Animation aborted: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier(), e);
-			System.out.println("Animation aborted: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier());
-		} catch (ProBException e) {		//load
-			e.printStackTrace();
-			Activator.logError("Animation aborted: Failed to start ProB for machine " + mchRoot.getHandleIdentifier(), e);
-			System.out.println("Animation aborted: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
+		if (!isRunning(mchRoot)){ 
+			try {
+				//refresh project in workspace (avoids ProB errors)
+				IProject project = mchRoot.getRodinProject().getProject();
+				project.refreshLocal(IResource.DEPTH_ONE, null);
+				
+				// start ProB animation
+				System.out.println("Starting ProB for " + mchRoot.getHandleIdentifier());
+				LoadEventBModelCommand.load(Animator.getAnimator(), mchRoot);
+				
+			} catch (CoreException e) {  	//refreshLocal
+				e.printStackTrace();
+				Activator.logError("Animation aborted: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier(), e);
+				System.out.println("Animation aborted: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier());
+			} catch (ProBException e) {		//load
+				e.printStackTrace();
+				Activator.logError("Animation aborted: Failed to start ProB for machine " + mchRoot.getHandleIdentifier(), e);
+				System.out.println("Animation aborted: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
+			}
+			AnimationManager.mchRoot = mchRoot;
+			//tell the participants to start
+			for (IAnimationParticipant participant : Activator.getParticipants()) {
+				System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
+				participant.startAnimating(mchRoot);	
+			}
 		}
-		AnimationManager.mchRoot = mchRoot;
-		//tell the participants to start
-		for (IAnimationParticipant participant : Activator.getParticipants()) {
-			System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
-			participant.startAnimating(mchRoot);	
-		}	
-		
 	}
 	
 	/**
@@ -84,8 +83,7 @@ public class AnimationManager {
 	 * @param mchRoot
 	 */
 	public static void stopAnimation (IMachineRoot mchRoot) {
-		if (AnimationManager.mchRoot==null) return;
-		if (mchRoot.equals(AnimationManager.mchRoot)) {
+		if (isRunning(mchRoot)){ 
 			//tell participants they can stop
 			for (IAnimationParticipant participant : Activator.getParticipants()) {
 				participant.stopAnimating(mchRoot);
@@ -95,7 +93,7 @@ public class AnimationManager {
 	}
 	
 	public static void restartAnimation (IMachineRoot mchRoot) {
-		if (mchRoot.equals(AnimationManager.mchRoot)) {
+		if (isRunning(mchRoot)){ 
 			stopAnimation(mchRoot);
 			startAnimation(mchRoot);
 		}
@@ -118,13 +116,13 @@ public class AnimationManager {
 	 * 
 	 */
 	public static void stateChanged() {
-		if (mchRoot==null) 
-			return;
+		if (isRunning(mchRoot)){ 
 			//tell the participants to update
 			for (IAnimationParticipant participant : Activator.getParticipants()) {
 				System.out.println("Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
 				participant.updateAnimation(mchRoot);	
-			}	
+			}
+		}
 	}
 	
 	
