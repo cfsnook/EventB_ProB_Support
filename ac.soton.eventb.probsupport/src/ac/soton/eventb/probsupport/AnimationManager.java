@@ -36,7 +36,7 @@ import de.prob.exceptions.ProBException;
 
 public class AnimationManager {
 
-	public static int historyPosition;
+	// the currently animated machines 
 	public static IMachineRoot mchRoot=null;
 
 	/**
@@ -68,7 +68,6 @@ public class AnimationManager {
 			System.out.println("Animation aborted: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
 		}
 		AnimationManager.mchRoot = mchRoot;
-		AnimationManager.historyPosition = 0;
 		//tell the participants to start
 		for (IAnimationParticipant participant : Activator.getParticipants()) {
 			System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
@@ -92,7 +91,6 @@ public class AnimationManager {
 				participant.stopAnimating(mchRoot);
 			}
 			AnimationManager.mchRoot=null;
-			AnimationManager.historyPosition = 0;
 		}
 	}
 	
@@ -122,16 +120,11 @@ public class AnimationManager {
 	public static void stateChanged() {
 		if (mchRoot==null) 
 			return;
-		History history = getAnimator(mchRoot).getHistory();
-		MachineDescription mch = getAnimator(mchRoot).getMachineDescription();
-//		if (AnimationManager.historyPosition ==0 || history.getCurrentPosition()>AnimationManager.historyPosition) {
 			//tell the participants to update
 			for (IAnimationParticipant participant : Activator.getParticipants()) {
 				System.out.println("Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
 				participant.updateAnimation(mchRoot);	
 			}	
-			historyPosition = history.getCurrentPosition();
-//		}
 	}
 	
 	
@@ -159,15 +152,6 @@ public class AnimationManager {
 	public static List<Operation_> getEnabledOperations(IMachineRoot mchRoot) {
 		Animator animator = getAnimator(mchRoot);
 		State currentState = animator.getCurrentState();
-		
-		History hist  = animator.getHistory();
-		
-		int pos = animator.getHistory().getCurrentPosition();
-		int size  = animator.getHistory().size();
-		HistoryItem hi = hist.getHistoryItem(pos);
-		HistoryItem[] all = hist.getAllItems();
-		State histstate = all[pos].getState();
-		
 		List<Operation_> enabledOperations = new ArrayList<Operation_>();
 		// for each enabled operation in the ProB model create an operation_
 		for(Operation proBop: currentState.getEnabledOperations()){
@@ -211,18 +195,12 @@ public class AnimationManager {
 	}
 
 	private static Operation_ convert(Operation proBOperation) {
-//		String opname = proBOperation.getName();
-//		List<String> args = proBOperation.getArguments();
 		return new Operation_(proBOperation.getName(), proBOperation.getArguments());
 	}
 	
 	private static State_ convert(State proBState) {
 		State_ state = new State_();
 		for (Entry<String, Variable> entry : proBState.getValues().entrySet()) {
-			Variable v = entry.getValue();
-			String key = entry.getKey();
-			String id = entry.getValue().getIdentifier();
-			String value = entry.getValue().getValue();
 			state.add(entry.getValue().getIdentifier(), entry.getValue().getValue());
 		}
 		return state;
@@ -235,22 +213,12 @@ public class AnimationManager {
 	 */
 	private static History_ convert(History proBHistory) {
 		History_ history = new History_();
-//		HistoryItem hi = null;
 		HistoryItem[] historyItems = proBHistory.getAllItems();
 		int currentPos = proBHistory.getCurrentPosition();
-//		for (HistoryItem next_hi : proBHistory.getAllItems()) {
 		for (int i=0; i<currentPos; i++) {
 			history.addItem(convert(historyItems[i].getOperation()), convert(historyItems[i+1].getState()));
-//			HistoryItem next_hi = historyItems[i];
-//			if (hi==null) {
-//				history.addItem(null, convert(next_hi.getState()));
-//			}else {
-//				history.addItem(convert(hi.getOperation()), convert(next_hi.getState()));
-//			}
-//			hi = next_hi;
 		}
 		return history;
 	}
-
 
 }
