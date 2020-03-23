@@ -13,6 +13,14 @@ package ac.soton.eventb.probsupport.data;
 
 import java.util.List;
 
+/**
+ * A data structure representing an operation invocation of an animation
+ * 
+ * This is an operation name and a list of argument values (as strings)
+ * 
+ * @author cfsnook
+ *
+ */
 public class Operation_ {
 
 	private String name;
@@ -32,10 +40,6 @@ public class Operation_ {
 		return arguments;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public String inStringFormat() {
 		return name+" "+arguments;
 	}

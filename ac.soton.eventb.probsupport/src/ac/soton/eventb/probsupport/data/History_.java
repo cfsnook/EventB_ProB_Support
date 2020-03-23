@@ -15,6 +15,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A data structure for the current history of an animation
+ * 
+ * This is a list of history items, each consisting of an operation and a state.
+ * 	I.e. the state after the operation invocation
+ * The first history item will be the setup
+ * 
+ * @author cfsnook
+ *
+ */
 public class History_ {
 
 	public class HistoryItem_ {

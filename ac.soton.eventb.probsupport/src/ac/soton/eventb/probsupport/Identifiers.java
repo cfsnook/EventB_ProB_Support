@@ -11,6 +11,12 @@
 
 package ac.soton.eventb.probsupport;
 
+/**
+ * Identifier constants used in the animation participants extension point 
+ * 
+ * @author cfsnook
+ *
+ */
 public class Identifiers {
 
 	public static String EXTPT_ANIMATIONPARTICIPANTS_EXTPTID = "ac.soton.eventb.probsupport.animationParticipant";

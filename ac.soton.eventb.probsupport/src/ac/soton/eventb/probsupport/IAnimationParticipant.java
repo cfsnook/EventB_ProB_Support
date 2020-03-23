@@ -13,6 +13,15 @@ package ac.soton.eventb.probsupport;
 
 import org.eventb.core.IMachineRoot;
 
+/**
+ * The interface for animation participants
+ * 
+ * An implementation of this interface must be declared in the extension point
+ * of each animation participant.
+ * 
+ * @author cfsnook
+ *
+ */
 public interface IAnimationParticipant {
 
 	void startAnimating(IMachineRoot mchRoot);

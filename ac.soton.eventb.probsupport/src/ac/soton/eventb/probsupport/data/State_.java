@@ -15,6 +15,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A data structure for the current state of an animation
+ * 
+ * This is a map of variable identifiers to values (as strings)
+ * 
+ * @author cfsnook
+ *
+ */
 public class State_ {
 
 	private Map<String,String> state = new HashMap<String,String>();

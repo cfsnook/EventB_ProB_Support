@@ -15,6 +15,13 @@ import de.prob.core.IAnimationListener;
 import de.prob.core.domainobjects.Operation;
 import de.prob.core.domainobjects.State;
 
+/**
+ * A listener for ProB to call.
+ * This just defers to the Animation manager
+ * 
+ * @author cfs
+ *
+ */
 public class AnimationListener implements IAnimationListener{
 
 	/**

@@ -33,6 +33,12 @@ import de.prob.core.domainobjects.State;
 import de.prob.core.domainobjects.Variable;
 import de.prob.exceptions.ProBException;
 
+/**
+ * This manages the ProB animation and relays information to the animation participants
+ * 
+ * @author cfsnook
+ *
+ */
 public class AnimationManager {
 
 	// the currently animated machines 
@@ -138,6 +144,7 @@ public class AnimationManager {
 	
 	/**
 	 * Returns the history of the given animation as a Map
+	 * 
 	 * @param mchRoot
 	 * @return
 	 */
@@ -147,9 +154,15 @@ public class AnimationManager {
 		return (convert(proBHistory));
 	}
 
+	/**
+	 * Returns a list of the currently enabled operation invocations
+	 * 
+	 * @param mchRoot
+	 * @return
+	 */
 	public static List<Operation_> getEnabledOperations(IMachineRoot mchRoot) {
 		Animator animator = getAnimator(mchRoot);
-		State currentState = animator.getCurrentState();
+		State currentState = animator.getCurrentState();		
 		List<Operation_> enabledOperations = new ArrayList<Operation_>();
 		// for each enabled operation in the ProB model create an operation_
 		for(Operation proBop: currentState.getEnabledOperations()){
@@ -158,6 +171,12 @@ public class AnimationManager {
 		return enabledOperations;
 	}
 	
+	/**
+	 * 
+	 * @param mchRoot
+	 * @param operation
+	 * @param silent
+	 */
 	public static void executeOperation(IMachineRoot mchRoot, Operation_ operation, boolean silent)  {
 		Animator animator = getAnimator(mchRoot);
 		Operation proBOperation = getOperation(animator, operation);
@@ -168,12 +187,21 @@ public class AnimationManager {
 		}
 	}
 	
-	////// private helper methods
+	/////////////////////////// private helper methods ////////////////////////////////////////
 	
+	/**
+	 * @param mchRoot
+	 * @return
+	 */
 	private static Animator getAnimator(IMachineRoot mchRoot) {
 		return Animator.getAnimator();
 	}
 	
+	/**
+	 * @param animator
+	 * @param operation
+	 * @return
+	 */
 	private static Operation getOperation(Animator animator, Operation_ operation) {
 		List<Operation> enabledOps = animator.getCurrentState().getEnabledOperations();
 		for (Operation enabled : enabledOps) {
@@ -192,10 +220,18 @@ public class AnimationManager {
 		return null;
 	}
 
+	/**
+	 * @param proBOperation
+	 * @return
+	 */
 	private static Operation_ convert(Operation proBOperation) {
 		return new Operation_(proBOperation.getName(), proBOperation.getArguments());
 	}
 	
+	/**
+	 * @param proBState
+	 * @return
+	 */
 	private static State_ convert(State proBState) {
 		State_ state = new State_();
 		for (Entry<String, Variable> entry : proBState.getValues().entrySet()) {

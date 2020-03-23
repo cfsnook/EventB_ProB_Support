@@ -22,6 +22,17 @@ import org.eventb.core.IMachineRoot;
 
 import ac.soton.eventb.probsupport.AnimationManager;
 
+/**
+ * The Handler for animation start commands.
+ * This assumes that an IMachineRoot is selected (e.g. in the Event-B Navigator)
+ * 
+ * 	 Client handlers can override this to provide other ways to obtain a machine from whatever is selected
+ * 	(The plugin.xml should declare the specialised handler is for command id "ac.soton.eventb.probsupport.StartAnimation"
+ * 			as well as when the specialised handler is enabled)
+ * 
+ * @author cfsnook
+ *
+ */
 public class AnimationStartHandler extends AbstractHandler implements IHandler {
 
 	/* (non-Javadoc)

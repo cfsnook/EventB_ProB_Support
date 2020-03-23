@@ -39,6 +39,12 @@ import de.bmotionstudio.gef.editor.BMotionStudioEditor;
 import de.bmotionstudio.gef.editor.model.Visualization;
 import de.prob.core.Animator;
 
+/**
+ * BMotionStudio Animation Participant
+ * 
+ * @author cfsnook
+ *
+ */
 public class BMSAnimationParticipant implements IAnimationParticipant {
 
 	private static final String BMOTION_STUDIO_EXT = "bmso";
@@ -46,6 +52,9 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 	//remember the editors we run at start, so we can stop them later
 	private Set<BMotionStudioEditor> bmsEditors = new HashSet<BMotionStudioEditor>();
 	
+	/* (non-Javadoc)
+	 * @see ac.soton.eventb.probsupport.IAnimationParticipant#startAnimating(org.eventb.core.IMachineRoot)
+	 */
 	@Override
 	public void startAnimating(IMachineRoot mchRoot) {
 		bmsEditors.clear();  //remember the editors so that we can stop them
@@ -77,6 +86,9 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ac.soton.eventb.probsupport.IAnimationParticipant#stopAnimating(org.eventb.core.IMachineRoot)
+	 */
 	@Override
 	public void stopAnimating(IMachineRoot mchRoot) {
 		for (BMotionStudioEditor bmsEditor : bmsEditors) {
@@ -87,7 +99,16 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 		bmsEditors.clear();
 	}
 	
+	/* (non-Javadoc)
+	 * @see ac.soton.eventb.probsupport.IAnimationParticipant#updateAnimation(org.eventb.core.IMachineRoot)
+	 */
+	@Override
+	public void updateAnimation(IMachineRoot mchRoot) {
+		//do nothing as BMotion Studio does its own listening
+	}
+	
 	/**
+	 * Run the BMotion Studio editor
 	 * 
 	 * @param bmsFile
 	 * @param animator
@@ -145,10 +166,5 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
             visualization.setIsRunning(true);
             return visualization;
     }
-
-	@Override
-	public void updateAnimation(IMachineRoot mchRoot) {
-		//do nothing as BMS does its own listening
-	}
     
 }
