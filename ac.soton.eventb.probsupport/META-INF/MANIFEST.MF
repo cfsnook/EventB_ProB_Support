@@ -4,19 +4,12 @@ Bundle-Name: Probsupport
 Bundle-SymbolicName: ac.soton.eventb.probsupport;singleton:=true
 Bundle-Version: 0.0.0.qualifier
 Automatic-Module-Name: ac.soton.eventb.probsupport
-Require-Bundle: org.eclipse.ui;bundle-version="[3.109.0,4.0.0)",
+Require-Bundle: org.eclipse.core.resources;bundle-version="[3.12.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.13.0,4.0.0)",
- org.eventb.emf.core,
- org.eventb.core;bundle-version="3.3.1",
- org.eventb.emf.persistence,
- org.rodinp.core;bundle-version="1.7.1",
- org.eclipse.emf.common;bundle-version="2.13.0",
- de.prob.core;bundle-version="9.4.4",
- org.eclipse.core.resources,
- de.bmotionstudio.gef.editor,
- org.eclipse.ui.workbench,
- org.eclipse.ui.ide;bundle-version="3.13.1",
- org.eclipse.core.expressions
+ org.eclipse.ui;bundle-version="[3.109.0,4.0.0)",
+ org.rodinp.core;bundle-version="[1.7.1,2.0.0)",
+ org.eventb.core;bundle-version="[3.3.1,4.0.0)",
+ de.bmotionstudio.gef.editor;bundle-version="[5.5.0,6.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: ac.soton.eventb.probsupport,
