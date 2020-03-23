@@ -37,9 +37,7 @@ public class Operation_ {
 	 * @return
 	 */
 	public String inStringFormat() {
-		//String s1 = toString();
-		//String s1 = name+arguments;
-		return name+" "+arguments; //toString().replaceFirst("\\(", " (");
+		return name+" "+arguments;
 	}
 }
 
