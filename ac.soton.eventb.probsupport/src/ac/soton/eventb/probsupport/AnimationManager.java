@@ -65,12 +65,12 @@ public class AnimationManager {
 				
 			} catch (CoreException e) {  	//refreshLocal
 				e.printStackTrace();
-				Activator.logError("Animation aborted: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier(), e);
-				System.out.println("Animation aborted: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier());
+				Activator.logError("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier(), e);
+				System.out.println("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier());
 			} catch (ProBException e) {		//load
 				e.printStackTrace();
-				Activator.logError("Animation aborted: Failed to start ProB for machine " + mchRoot.getHandleIdentifier(), e);
-				System.out.println("Animation aborted: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
+				Activator.logError("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier(), e);
+				System.out.println("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
 			}
 			AnimationManager.mchRoot = mchRoot;
 			//tell the participants to start
@@ -125,7 +125,7 @@ public class AnimationManager {
 		if (isRunning(mchRoot)){ 
 			//tell the participants to update
 			for (IAnimationParticipant participant : Activator.getParticipants()) {
-				System.out.println("Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
+				System.out.println("Animation manager: Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
 				participant.updateAnimation(mchRoot);	
 			}
 		}
