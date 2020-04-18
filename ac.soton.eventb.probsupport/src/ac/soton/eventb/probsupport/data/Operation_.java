@@ -43,5 +43,17 @@ public class Operation_ {
 	public String inStringFormat() {
 		return name+" "+arguments;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (super.equals(obj)) return true;
+		if (obj instanceof Operation_ &&
+				((Operation_)obj).getName().equals(this.getName()) &&
+				((Operation_)obj).getArguments().equals(this.getArguments())
+				) {
+			return true;
+		}
+		return false;
+	}
 }
 

@@ -47,4 +47,14 @@ public class State_ {
 		return Collections.unmodifiableMap(state);
 	}
 	
+	@Override
+	public boolean equals(Object st) {
+		if (st instanceof State_ &&
+				((State_)st).getAllValues().equals(this.getAllValues())
+				) {
+			return true;
+		}
+		return false;
+	}
+	
 }
