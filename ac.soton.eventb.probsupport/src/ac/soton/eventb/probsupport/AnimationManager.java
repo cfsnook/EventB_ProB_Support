@@ -76,7 +76,13 @@ public class AnimationManager {
 			//tell the participants to start
 			for (IAnimationParticipant participant : Activator.getParticipants()) {
 				System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
-				participant.startAnimating(mchRoot);	
+				try {
+					participant.startAnimating(mchRoot);
+				} catch (Exception e) {
+					e.printStackTrace();
+					Activator.logError("Animation manager: Failed to start Animation Participant " + participant.toString(), e);
+					System.out.println("Animation manager: Failed to start Animation Participant " + participant.toString());
+				}
 			}
 		}
 	}
@@ -89,13 +95,19 @@ public class AnimationManager {
 	 * @param mchRoot
 	 */
 	public static void stopAnimation (IMachineRoot mchRoot) {
-		if (isRunning(mchRoot)){ 
+		//if (isRunning(mchRoot)){ 
 			//tell participants they can stop
 			for (IAnimationParticipant participant : Activator.getParticipants()) {
-				participant.stopAnimating(mchRoot);
+				try {
+					participant.stopAnimating(mchRoot);
+				} catch (Exception e) {
+					e.printStackTrace();
+					Activator.logError("Animation manager: Failed to stop Animation Participant " + participant.toString(), e);
+					System.out.println("Animation manager: Failed to stop Animation Participant " + participant.toString());
+				}
 			}
 			AnimationManager.mchRoot=null;
-		}
+		//}
 	}
 	
 	public static void restartAnimation (IMachineRoot mchRoot) {
