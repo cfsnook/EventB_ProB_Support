@@ -112,8 +112,24 @@ public class AnimationManager {
 	
 	public static void restartAnimation (IMachineRoot mchRoot) {
 		if (isRunning(mchRoot)){ 
-			stopAnimation(mchRoot);
-			startAnimation(mchRoot);
+			Animator animator = Animator.getAnimator();
+			try {
+				LoadEventBModelCommand.load(animator, mchRoot);
+				//animator.getLanguageDependendPart().reload(animator);
+			} catch (ProBException e1) {
+				e1.printStackTrace();
+			}
+			for (IAnimationParticipant participant : Activator.getParticipants()) {
+				try {
+					participant.restartAnimation(mchRoot);
+				} catch (Exception e) {
+					e.printStackTrace();
+					Activator.logError("Animation manager: Failed to stop Animation Participant " + participant.toString(), e);
+					System.out.println("Animation manager: Failed to stop Animation Participant " + participant.toString());
+				}
+			}
+//			stopAnimation(mchRoot);
+//			startAnimation(mchRoot);
 		}
 	}
 	
