@@ -12,8 +12,9 @@
 package ac.soton.eventb.probsupport.BMotionStudio;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -49,8 +50,8 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 
 	private static final String BMOTION_STUDIO_EXT = "bmso";
 	
-	//remember the editors we run at start, so we can stop them later
-	private Set<BMotionStudioEditor> bmsEditors = new HashSet<BMotionStudioEditor>();
+	//remember the editors we run at start, so we can restart/stop them later
+	private Map<BMotionStudioEditor,IFile> bmsEditors = new HashMap<BMotionStudioEditor,IFile>();
 	
 	/* (non-Javadoc)
 	 * @see ac.soton.eventb.probsupport.IAnimationParticipant#startAnimating(org.eventb.core.IMachineRoot)
@@ -61,24 +62,20 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 		IProject project = mchRoot.getRodinProject().getProject();
 		String mchName = mchRoot.getComponentName();
 		// Find all the open BMS editors that are for the given machine root and run them
-		Set<IFile> bmsFiles = new HashSet<IFile>();
-		for (IWorkbenchPage page : PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPages()) {   //   activeWorkbenchWindow.getPages()) {
+		for (IWorkbenchPage page : PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPages()) {  
 			for (IEditorReference editorRef : page.getEditorReferences()) {
 				IEditorPart editor = editorRef.getEditor(true);
 	    		//look for BMotionStudio editors on the same machine
 	    		if (editor instanceof BMotionStudioEditor) {
 	    			BMotionStudioEditor bmsEditor = (BMotionStudioEditor) editor;
-	    			Object bmspf = bmsEditor.getVisualization().getProjectFile();
-	    			if (bmspf instanceof IFile && BMOTION_STUDIO_EXT.equals(((IFile)bmspf).getFileExtension())){
-		    			String bmsMachineName = bmsEditor.getVisualization().getMachineName();
-		    			IProject bmsproject = ((IFile)bmspf).getProject();
+	    			IFile bmspf = bmsEditor.getVisualization().getProjectFile();
+	    			if (bmspf != null && BMOTION_STUDIO_EXT.equals(bmspf.getFileExtension())){
+	    				String bmsMachineName = bmsEditor.getVisualization().getMachineName();
+	    				IProject bmsproject = bmspf.getProject();
 	    				if (bmsMachineName.startsWith(mchName) && project.equals(bmsproject)){
-							if (!bmsFiles.contains(bmspf)) {
-								bmsFiles.add(((IFile)bmspf));
-								if (runBMotionStudio(bmsEditor, (IFile)bmspf)) {
-									bmsEditors.add(bmsEditor);
-								}
-							}
+	    					if (runBMotionStudio(bmsEditor, bmspf)) {
+	    						bmsEditors.put(bmsEditor,bmspf);
+	    					}
 	    				}
 	    			}
 		    	}
@@ -86,14 +83,15 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 		}
 	}
 
+
 	/* (non-Javadoc)
 	 * @see ac.soton.eventb.probsupport.IAnimationParticipant#stopAnimating(org.eventb.core.IMachineRoot)
 	 */
 	@Override
 	public void stopAnimating(IMachineRoot mchRoot) {
-		for (BMotionStudioEditor bmsEditor : bmsEditors) {
-			if (bmsEditor.getVisualization().getMachineName().startsWith(mchRoot.getComponentName())) {
-				bmsEditor.removeRunPage();
+		for (Entry<BMotionStudioEditor, IFile> bmsEditorEntry : bmsEditors.entrySet()) {
+			if (bmsEditorEntry.getKey().getVisualization().getMachineName().startsWith(mchRoot.getComponentName())) {
+				bmsEditorEntry.getKey().reset();
 			}
 		}
 		bmsEditors.clear();
@@ -106,6 +104,17 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 	public void updateAnimation(IMachineRoot mchRoot) {
 		//do nothing as BMotion Studio does its own listening
 	}
+	
+	/* (non-Javadoc)
+	 * @see ac.soton.eventb.probsupport.IAnimationParticipant#restartAnimation(org.eventb.core.IMachineRoot)
+	 */
+	@Override
+	public void restartAnimation(IMachineRoot mchRoot) {
+		for (Entry<BMotionStudioEditor, IFile> bmsEditorEntry : bmsEditors.entrySet()) {
+			runBMotionStudio(bmsEditorEntry.getKey(), bmsEditorEntry.getValue());
+		}
+	}
+	
 	
 	/**
 	 * Run the BMotion Studio editor
@@ -166,5 +175,6 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
             visualization.setIsRunning(true);
             return visualization;
     }
+
     
 }
