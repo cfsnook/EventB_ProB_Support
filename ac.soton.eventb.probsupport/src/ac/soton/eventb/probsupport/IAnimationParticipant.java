@@ -24,12 +24,39 @@ import org.eventb.core.IMachineRoot;
  */
 public interface IAnimationParticipant {
 
-	void startAnimating(IMachineRoot mchRoot);
+	/**
+	 * Start a new animation for the given machine root.
+	 * 
+	 * @param mchRoot
+	 */
+	void startAnimation(IMachineRoot mchRoot);
 	
-	void stopAnimating(IMachineRoot mchRoot);
+	/**
+	 * Stop the current animation of the given machine root.
+	 * 
+	 * @param mchRoot
+	 */
+	void stopAnimation(IMachineRoot mchRoot);
 	
+	/**
+	 * Update the current animation of the given machine root.
+	 * 
+	 * (This is called after ProB has notified the animation manager's listener).
+	 * 
+	 * The participant should update by calling the animation manager to get the current state,
+	 * enabled operations and history.
+	 * 
+	 * @param mchRoot
+	 */
 	void updateAnimation(IMachineRoot mchRoot);
 
+	/**
+	 * Restart the current animation of the given machine root.
+	 * 
+	 * (This is called after the animation manager has restarted ProB animation of the given machine root).
+	 * 
+	 * @param mchRoot
+	 */
 	void restartAnimation(IMachineRoot mchRoot);
 	
 }

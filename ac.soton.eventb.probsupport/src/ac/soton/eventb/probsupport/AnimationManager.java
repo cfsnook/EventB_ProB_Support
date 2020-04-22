@@ -77,7 +77,7 @@ public class AnimationManager {
 			for (IAnimationParticipant participant : Activator.getParticipants()) {
 				System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
 				try {
-					participant.startAnimating(mchRoot);
+					participant.startAnimation(mchRoot);
 				} catch (Exception e) {
 					e.printStackTrace();
 					Activator.logError("Animation manager: Failed to start Animation Participant " + participant.toString(), e);
@@ -95,27 +95,29 @@ public class AnimationManager {
 	 * @param mchRoot
 	 */
 	public static void stopAnimation (IMachineRoot mchRoot) {
-		//if (isRunning(mchRoot)){ 
-			//tell participants they can stop
-			for (IAnimationParticipant participant : Activator.getParticipants()) {
-				try {
-					participant.stopAnimating(mchRoot);
-				} catch (Exception e) {
-					e.printStackTrace();
-					Activator.logError("Animation manager: Failed to stop Animation Participant " + participant.toString(), e);
-					System.out.println("Animation manager: Failed to stop Animation Participant " + participant.toString());
-				}
+		for (IAnimationParticipant participant : Activator.getParticipants()) {
+			try {
+				participant.stopAnimation(mchRoot);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Activator.logError("Animation manager: Failed to stop Animation Participant " + participant.toString(), e);
+				System.out.println("Animation manager: Failed to stop Animation Participant " + participant.toString());
 			}
-			AnimationManager.mchRoot=null;
-		//}
+		}
+		AnimationManager.mchRoot=null;
 	}
 	
+	/**
+	 * Restarts the current animation for the given machine root
+	 * 
+	 * After restarting ProB animation, calls the restartAnimation method of all registered animation participants.
+	 * @param mchRoot
+	 */
 	public static void restartAnimation (IMachineRoot mchRoot) {
 		if (isRunning(mchRoot)){ 
 			Animator animator = Animator.getAnimator();
 			try {
 				LoadEventBModelCommand.load(animator, mchRoot);
-				//animator.getLanguageDependendPart().reload(animator);
 			} catch (ProBException e1) {
 				e1.printStackTrace();
 			}
@@ -128,8 +130,6 @@ public class AnimationManager {
 					System.out.println("Animation manager: Failed to stop Animation Participant " + participant.toString());
 				}
 			}
-//			stopAnimation(mchRoot);
-//			startAnimation(mchRoot);
 		}
 	}
 	
