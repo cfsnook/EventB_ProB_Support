@@ -57,7 +57,7 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 	 * @see ac.soton.eventb.probsupport.IAnimationParticipant#startAnimating(org.eventb.core.IMachineRoot)
 	 */
 	@Override
-	public void startAnimating(IMachineRoot mchRoot) {
+	public void startAnimation(IMachineRoot mchRoot) {
 		bmsEditors.clear();  //remember the editors so that we can stop them
 		IProject project = mchRoot.getRodinProject().getProject();
 		String mchName = mchRoot.getComponentName();
@@ -88,7 +88,7 @@ public class BMSAnimationParticipant implements IAnimationParticipant {
 	 * @see ac.soton.eventb.probsupport.IAnimationParticipant#stopAnimating(org.eventb.core.IMachineRoot)
 	 */
 	@Override
-	public void stopAnimating(IMachineRoot mchRoot) {
+	public void stopAnimation(IMachineRoot mchRoot) {
 		for (Entry<BMotionStudioEditor, IFile> bmsEditorEntry : bmsEditors.entrySet()) {
 			if (bmsEditorEntry.getKey().getVisualization().getMachineName().startsWith(mchRoot.getComponentName())) {
 				bmsEditorEntry.getKey().reset();
