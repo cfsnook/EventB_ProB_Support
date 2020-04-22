@@ -15,14 +15,15 @@
       </animationParticipant>
    </extension>
 
-   <!--extension
+  <!-- listen to ProB animations -->  
+   <extension
          point="de.prob.core.animation">
       <listener
-            class="ac.soton.eventb.probsupport.listeners.AnimationListener">
+            class="ac.soton.eventb.probsupport.AnimationListener">
       </listener>
-   </extension-->
+   </extension>
    
-   <!-- the commands -->
+   <!-- commands -->
    <extension
          point="org.eclipse.ui.commands">
       <command
@@ -37,7 +38,7 @@
       </command>
    </extension>
    
-   <!-- the handlers -->
+   <!-- handlers -->
    <extension
          point="org.eclipse.ui.handlers">
       <handler
@@ -119,15 +120,5 @@
          </command>
       </menuContribution>
    </extension>
-<!-- listen to ProB animations  - scenario checker  -->  
-   <extension
-         point="de.prob.core.animation">
-      <listener
-            class="ac.soton.eventb.probsupport.AnimationListener">
-      </listener>
-   </extension>
-<!-- end of listen to ProB animations  - scenario checker --> 
-   
-<!-- end of new menu handler -->
 
 </plugin>

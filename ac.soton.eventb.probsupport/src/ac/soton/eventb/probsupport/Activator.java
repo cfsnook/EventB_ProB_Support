@@ -24,7 +24,11 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-
+/**
+ * The activator class controls the plug-in life cycle
+ * 
+ * @author cfsnook
+ */
 public class Activator extends AbstractUIPlugin {
 	
 	public static final String PLUGIN_ID = "ac.soton.eventb.probsupport";
