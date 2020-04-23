@@ -19,7 +19,7 @@ import de.prob.core.domainobjects.State;
  * A listener for ProB to call.
  * This just defers to the Animation manager
  * 
- * @author cfs
+ * @author cfsnook
  *
  */
 public class AnimationListener implements IAnimationListener{

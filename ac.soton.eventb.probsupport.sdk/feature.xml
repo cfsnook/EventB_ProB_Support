@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ac.soton.eventb.probsupport.feature"
+      id="ac.soton.eventb.probsupport.sdk"
       label="%featureName"
       version="0.0.0.qualifier"
       provider-name="%featureVendor"
-      license-feature="org.rodinp.license"
+      license-feature="org.rodinp.licence"
       license-feature-version="1.0.0.release">
 
    <description>
