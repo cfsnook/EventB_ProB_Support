@@ -26,14 +26,12 @@ public class AnimationListener implements IAnimationListener{
 
 	/**
 	 * called by the Animation Listener for ProB when the state has changed
-	 * Since the order of notifications of state changes can vary we use the history 
-	 * and only update when the history contains information past the trace point of the last update
-	 * The oracle is only updated for external operations.
+	 * 
+	 * This defers to the Animation Manager.
 	 * 
 	 */
 		public void currentStateChanged(State activeState, Operation operation) {
 			AnimationManager.stateChanged();
 		}	
 
-		
 }
