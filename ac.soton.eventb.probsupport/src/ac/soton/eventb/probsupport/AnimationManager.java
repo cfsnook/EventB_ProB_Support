@@ -158,29 +158,31 @@ public class AnimationManager {
 	 * 
 	 */
 	public static void stateChanged() {
-		List<String> machineNames = Animator.getAnimator().getMachineDescription().getModelNames();
-		if (machineNames.contains(mchRoot.getElementName()) && isRunning(mchRoot)){
-			//tell the participants to update
-			for (IAnimationParticipant participant : Activator.getParticipants()) {
-				System.out.println("Animation manager: Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
-				try {
-					participant.updateAnimation(mchRoot);
-				} catch (Exception e) {
-					e.printStackTrace();
-					Activator.logError("Animation manager: Failed to update Animation Participant " + participant.toString(), e);
-					System.out.println("Animation manager: Failed to update Animation Participant " + participant.toString());
+		if (isRunning(mchRoot)){
+			List<String> machineNames = Animator.getAnimator().getMachineDescription().getModelNames();
+			if (machineNames.contains(mchRoot.getElementName())){
+				//tell the participants to update
+				for (IAnimationParticipant participant : Activator.getParticipants()) {
+					System.out.println("Animation manager: Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
+					try {
+						participant.updateAnimation(mchRoot);
+					} catch (Exception e) {
+						e.printStackTrace();
+						Activator.logError("Animation manager: Failed to update Animation Participant " + participant.toString(), e);
+						System.out.println("Animation manager: Failed to update Animation Participant " + participant.toString());
+					}
 				}
-			}
-		}else {
-			//abort the participants as ProB is running something else
-			for (IAnimationParticipant participant : Activator.getParticipants()) {
-				System.out.println("Animation manager: Aborting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
-				try {
-					participant.stopAnimation(mchRoot);
-				} catch (Exception e) {
-					e.printStackTrace();
-					Activator.logError("Animation manager: Failed to abort Animation Participant " + participant.toString(), e);
-					System.out.println("Animation manager: Failed to abort Animation Participant " + participant.toString());
+			}else {
+				//abort the participants as ProB is running something else
+				for (IAnimationParticipant participant : Activator.getParticipants()) {
+					System.out.println("Animation manager: Aborting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
+					try {
+						participant.stopAnimation(mchRoot);
+					} catch (Exception e) {
+						e.printStackTrace();
+						Activator.logError("Animation manager: Failed to abort Animation Participant " + participant.toString(), e);
+						System.out.println("Animation manager: Failed to abort Animation Participant " + participant.toString());
+					}
 				}
 			}
 		}
