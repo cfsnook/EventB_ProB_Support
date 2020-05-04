@@ -50,39 +50,42 @@ public class AnimationManager {
 	 * This starts a new ProB animation on the given machine and then 
 	 * calls the startAnimating method of all registered animation participants.
 	 * 
+	 * (if an animation is already running it is stopped before the new animation is started).
+	 * 
 	 * @param mchRoot
 	 */
 	public static void startAnimation(IMachineRoot mchRoot) {
-		if (!isRunning(mchRoot)){ 
+		if (AnimationManager.mchRoot!=null) {
+			stopAnimation(mchRoot);
+		}
+		try {
+			//refresh project in workspace (avoids ProB errors)
+			IProject project = mchRoot.getRodinProject().getProject();
+			project.refreshLocal(IResource.DEPTH_ONE, null);
+			
+			// start ProB animation
+			System.out.println("Starting ProB for " + mchRoot.getHandleIdentifier());
+			LoadEventBModelCommand.load(Animator.getAnimator(), mchRoot);
+			
+		} catch (CoreException e) {  	//refreshLocal
+			e.printStackTrace();
+			Activator.logError("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier(), e);
+			System.out.println("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier());
+		} catch (ProBException e) {		//load
+			e.printStackTrace();
+			Activator.logError("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier(), e);
+			System.out.println("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
+		}
+		AnimationManager.mchRoot = mchRoot;
+		//tell the participants to start
+		for (IAnimationParticipant participant : Activator.getParticipants()) {
+			System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
 			try {
-				//refresh project in workspace (avoids ProB errors)
-				IProject project = mchRoot.getRodinProject().getProject();
-				project.refreshLocal(IResource.DEPTH_ONE, null);
-				
-				// start ProB animation
-				System.out.println("Starting ProB for " + mchRoot.getHandleIdentifier());
-				LoadEventBModelCommand.load(Animator.getAnimator(), mchRoot);
-				
-			} catch (CoreException e) {  	//refreshLocal
+				participant.startAnimation(mchRoot);
+			} catch (Exception e) {
 				e.printStackTrace();
-				Activator.logError("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier(), e);
-				System.out.println("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier());
-			} catch (ProBException e) {		//load
-				e.printStackTrace();
-				Activator.logError("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier(), e);
-				System.out.println("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
-			}
-			AnimationManager.mchRoot = mchRoot;
-			//tell the participants to start
-			for (IAnimationParticipant participant : Activator.getParticipants()) {
-				System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
-				try {
-					participant.startAnimation(mchRoot);
-				} catch (Exception e) {
-					e.printStackTrace();
-					Activator.logError("Animation manager: Failed to start Animation Participant " + participant.toString(), e);
-					System.out.println("Animation manager: Failed to start Animation Participant " + participant.toString());
-				}
+				Activator.logError("Animation manager: Failed to start Animation Participant " + participant.toString(), e);
+				System.out.println("Animation manager: Failed to start Animation Participant " + participant.toString());
 			}
 		}
 	}
