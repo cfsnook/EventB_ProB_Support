@@ -148,16 +148,40 @@ public class AnimationManager {
 
 	/**
 	 * This is called by the Animation Listener when ProB has a state change.
+	 * 
 	 * It tells the participants to update themselves. 
 	 * The participants should call back to this AnimationManager to obtain the information they need to update
 	 * 
+	 * However, if ProB is not currently animating the machine that the Animation Manager is expecting, 
+	 * e.g. if the user has forgotten this animation and started ProB without going through the Animation manager, 
+	 * then the animation participants are told to stop.
+	 * 
 	 */
 	public static void stateChanged() {
-		if (isRunning(mchRoot)){ 
+		List<String> machineNames = Animator.getAnimator().getMachineDescription().getModelNames();
+		if (machineNames.contains(mchRoot.getElementName()) && isRunning(mchRoot)){
 			//tell the participants to update
 			for (IAnimationParticipant participant : Activator.getParticipants()) {
 				System.out.println("Animation manager: Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
-				participant.updateAnimation(mchRoot);	
+				try {
+					participant.updateAnimation(mchRoot);
+				} catch (Exception e) {
+					e.printStackTrace();
+					Activator.logError("Animation manager: Failed to update Animation Participant " + participant.toString(), e);
+					System.out.println("Animation manager: Failed to update Animation Participant " + participant.toString());
+				}
+			}
+		}else {
+			//abort the participants as ProB is running something else
+			for (IAnimationParticipant participant : Activator.getParticipants()) {
+				System.out.println("Animation manager: Aborting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
+				try {
+					participant.stopAnimation(mchRoot);
+				} catch (Exception e) {
+					e.printStackTrace();
+					Activator.logError("Animation manager: Failed to abort Animation Participant " + participant.toString(), e);
+					System.out.println("Animation manager: Failed to abort Animation Participant " + participant.toString());
+				}
 			}
 		}
 	}
