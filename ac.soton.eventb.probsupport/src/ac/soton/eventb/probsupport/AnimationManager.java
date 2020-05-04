@@ -222,11 +222,12 @@ public class AnimationManager {
 		// for each enabled operation in the ProB model create an operation_
 		for(Operation proBop: currentState.getEnabledOperations()){
 			enabledOperations.add(convert(proBop));
-			}
+		}
 		return enabledOperations;
 	}
 	
 	/**
+	 * Executes the given operation in the ProB animation if it is enabled
 	 * 
 	 * @param mchRoot
 	 * @param operation
