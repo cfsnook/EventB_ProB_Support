@@ -50,39 +50,42 @@ public class AnimationManager {
 	 * This starts a new ProB animation on the given machine and then 
 	 * calls the startAnimating method of all registered animation participants.
 	 * 
+	 * (if an animation is already running it is stopped before the new animation is started).
+	 * 
 	 * @param mchRoot
 	 */
 	public static void startAnimation(IMachineRoot mchRoot) {
-		if (!isRunning(mchRoot)){ 
+		if (AnimationManager.mchRoot!=null) {
+			stopAnimation(mchRoot);
+		}
+		try {
+			//refresh project in workspace (avoids ProB errors)
+			IProject project = mchRoot.getRodinProject().getProject();
+			project.refreshLocal(IResource.DEPTH_ONE, null);
+			
+			// start ProB animation
+			System.out.println("Starting ProB for " + mchRoot.getHandleIdentifier());
+			LoadEventBModelCommand.load(Animator.getAnimator(), mchRoot);
+			
+		} catch (CoreException e) {  	//refreshLocal
+			e.printStackTrace();
+			Activator.logError("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier(), e);
+			System.out.println("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier());
+		} catch (ProBException e) {		//load
+			e.printStackTrace();
+			Activator.logError("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier(), e);
+			System.out.println("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
+		}
+		AnimationManager.mchRoot = mchRoot;
+		//tell the participants to start
+		for (IAnimationParticipant participant : Activator.getParticipants()) {
+			System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
 			try {
-				//refresh project in workspace (avoids ProB errors)
-				IProject project = mchRoot.getRodinProject().getProject();
-				project.refreshLocal(IResource.DEPTH_ONE, null);
-				
-				// start ProB animation
-				System.out.println("Starting ProB for " + mchRoot.getHandleIdentifier());
-				LoadEventBModelCommand.load(Animator.getAnimator(), mchRoot);
-				
-			} catch (CoreException e) {  	//refreshLocal
+				participant.startAnimation(mchRoot);
+			} catch (Exception e) {
 				e.printStackTrace();
-				Activator.logError("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier(), e);
-				System.out.println("Animation manager: Failed to refresh project " + mchRoot.getRodinProject().getHandleIdentifier());
-			} catch (ProBException e) {		//load
-				e.printStackTrace();
-				Activator.logError("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier(), e);
-				System.out.println("Animation manager: Failed to start ProB for machine " + mchRoot.getHandleIdentifier());
-			}
-			AnimationManager.mchRoot = mchRoot;
-			//tell the participants to start
-			for (IAnimationParticipant participant : Activator.getParticipants()) {
-				System.out.println("Starting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
-				try {
-					participant.startAnimation(mchRoot);
-				} catch (Exception e) {
-					e.printStackTrace();
-					Activator.logError("Animation manager: Failed to start Animation Participant " + participant.toString(), e);
-					System.out.println("Animation manager: Failed to start Animation Participant " + participant.toString());
-				}
+				Activator.logError("Animation manager: Failed to start Animation Participant " + participant.toString(), e);
+				System.out.println("Animation manager: Failed to start Animation Participant " + participant.toString());
 			}
 		}
 	}
@@ -145,16 +148,42 @@ public class AnimationManager {
 
 	/**
 	 * This is called by the Animation Listener when ProB has a state change.
+	 * 
 	 * It tells the participants to update themselves. 
 	 * The participants should call back to this AnimationManager to obtain the information they need to update
 	 * 
+	 * However, if ProB is not currently animating the machine that the Animation Manager is expecting, 
+	 * e.g. if the user has forgotten this animation and started ProB without going through the Animation manager, 
+	 * then the animation participants are told to stop.
+	 * 
 	 */
 	public static void stateChanged() {
-		if (isRunning(mchRoot)){ 
-			//tell the participants to update
-			for (IAnimationParticipant participant : Activator.getParticipants()) {
-				System.out.println("Animation manager: Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
-				participant.updateAnimation(mchRoot);	
+		if (isRunning(mchRoot)){
+			List<String> machineNames = Animator.getAnimator().getMachineDescription().getModelNames();
+			if (machineNames.contains(mchRoot.getElementName())){
+				//tell the participants to update
+				for (IAnimationParticipant participant : Activator.getParticipants()) {
+					System.out.println("Animation manager: Updating participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
+					try {
+						participant.updateAnimation(mchRoot);
+					} catch (Exception e) {
+						e.printStackTrace();
+						Activator.logError("Animation manager: Failed to update Animation Participant " + participant.toString(), e);
+						System.out.println("Animation manager: Failed to update Animation Participant " + participant.toString());
+					}
+				}
+			}else {
+				//abort the participants as ProB is running something else
+				for (IAnimationParticipant participant : Activator.getParticipants()) {
+					System.out.println("Animation manager: Aborting participant "+Activator.getParticipantID(participant) +" for " + mchRoot.getHandleIdentifier());
+					try {
+						participant.stopAnimation(mchRoot);
+					} catch (Exception e) {
+						e.printStackTrace();
+						Activator.logError("Animation manager: Failed to abort Animation Participant " + participant.toString(), e);
+						System.out.println("Animation manager: Failed to abort Animation Participant " + participant.toString());
+					}
+				}
 			}
 		}
 	}
@@ -195,11 +224,12 @@ public class AnimationManager {
 		// for each enabled operation in the ProB model create an operation_
 		for(Operation proBop: currentState.getEnabledOperations()){
 			enabledOperations.add(convert(proBop));
-			}
+		}
 		return enabledOperations;
 	}
 	
 	/**
+	 * Executes the given operation in the ProB animation if it is enabled
 	 * 
 	 * @param mchRoot
 	 * @param operation

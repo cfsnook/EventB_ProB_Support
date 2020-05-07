@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * A data structure for the current history of an animation
  * 
@@ -26,6 +27,7 @@ import java.util.List;
  *
  */
 public class History_ {
+	
 
 	public class HistoryItem_ {
 		public Operation_ operation;
@@ -38,6 +40,19 @@ public class History_ {
 	}
 	
 	private List<HistoryItem_> history = new ArrayList<HistoryItem_>();
+	
+//	/**
+//	 * 
+//	 * @param proBHistory
+//	 */
+//	public History_(History proBHistory) {
+//		//History_ history = new History_();
+//		HistoryItem[] historyItems = proBHistory.getAllItems();
+//		int currentPos = proBHistory.getCurrentPosition();
+//		for (int i=0; i<currentPos; i++) {
+//			addItem(new Operation_(historyItems[i].getOperation()), new State_(historyItems[i+1].getState()));
+//		}
+//	}
 	
 	public void addItem(Operation_ operation, State_ state) {
 		history.add(new HistoryItem_(operation, state));
