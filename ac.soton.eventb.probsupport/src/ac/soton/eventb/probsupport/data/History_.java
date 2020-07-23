@@ -28,7 +28,6 @@ import java.util.List;
  */
 public class History_ {
 	
-
 	public class HistoryItem_ {
 		public Operation_ operation;
 		public State_ state;
@@ -41,31 +40,38 @@ public class History_ {
 	
 	private List<HistoryItem_> history = new ArrayList<HistoryItem_>();
 	
-//	/**
-//	 * 
-//	 * @param proBHistory
-//	 */
-//	public History_(History proBHistory) {
-//		//History_ history = new History_();
-//		HistoryItem[] historyItems = proBHistory.getAllItems();
-//		int currentPos = proBHistory.getCurrentPosition();
-//		for (int i=0; i<currentPos; i++) {
-//			addItem(new Operation_(historyItems[i].getOperation()), new State_(historyItems[i+1].getState()));
-//		}
-//	}
-	
+	/**
+	 * construct and add a new item to the history
+	 * 
+	 * @param operation
+	 * @param state
+	 */
 	public void addItem(Operation_ operation, State_ state) {
 		history.add(new HistoryItem_(operation, state));
 	}
 	
+	/**
+	 * returns the number of history items in the history 
+	 * @return
+	 */
 	public int size() {
 		return history.size();
 	}
 	
+	/**
+	 * gets the history item at the given index
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public HistoryItem_ getitem(int index){
 		return history.get(index);
 	}
 	
+	/**
+	 * returns an (unmodifiable) list of all the history items
+	 * @return
+	 */
 	public List<HistoryItem_> getAllItems(){
 		return Collections.unmodifiableList(history);
 	}

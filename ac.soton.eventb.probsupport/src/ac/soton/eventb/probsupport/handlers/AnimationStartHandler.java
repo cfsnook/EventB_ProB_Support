@@ -54,6 +54,9 @@ public class AnimationStartHandler extends AbstractHandler implements IHandler {
 	/**
 	 * Client handlers can override this to provide other ways to obtain a machine from whatever is selected
 	 * 
+	 * This default implementation returns the machine, if any, which is the first selection in the structured selection
+	 * associated with the given event. Otherwise returns null.
+	 * 
 	 * @param event
 	 * @return
 	 * @throws ExecutionException
