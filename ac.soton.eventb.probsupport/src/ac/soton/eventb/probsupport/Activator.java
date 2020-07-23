@@ -32,7 +32,6 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 	
 	public static final String PLUGIN_ID = "ac.soton.eventb.probsupport";
-	//private static BundleContext context;
 
 	// The shared instance
 	private static Activator plugin;

@@ -32,18 +32,34 @@ public class Operation_ {
 		
 	}
 	
+	/**
+	 * returns the name of the operation
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * returns a list of the operation arguments
+	 * @return
+	 */
 	public List<String> getArguments(){
 		return arguments;
 	}
 	
+	/**
+	 * returns a string representing the operation.
+	 * (i.e. name followed by the arguments)
+	 * @return
+	 */
 	public String inStringFormat() {
 		return name+" "+arguments;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (super.equals(obj)) return true;
