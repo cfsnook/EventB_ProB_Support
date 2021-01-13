@@ -14,8 +14,8 @@
     <eclipse_updates-repo.url>http://download.eclipse.org/eclipse/updates/4.16/</eclipse_updates-repo.url>
     <!-- URL for Eclipse Releases repository (2020-06) -->
     <eclipse_releases-repo.url>http://download.eclipse.org/releases/2020-06</eclipse_releases-repo.url>
-    <!-- URL for Rodin Platform -->
-    <rodin-repo.url>http://rodin-b-sharp.sourceforge.net/core-updates</rodin-repo.url>
+    <!-- URL for Rodin Platform (3.5) -->
+    <rodin-repo.url>http://rodin-b-sharp.sourceforge.net/core-updates/3.5</rodin-repo.url>
     <!-- OPTIONAL Additional URLs -->
     <!-- URL for ProB -->
     <prob-repo.url>http://www.stups.hhu.de/prob_updates_rodin3</prob-repo.url>
