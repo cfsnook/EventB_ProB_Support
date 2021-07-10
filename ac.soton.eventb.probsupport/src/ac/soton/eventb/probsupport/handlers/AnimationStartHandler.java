@@ -43,9 +43,11 @@ public class AnimationStartHandler extends AbstractHandler implements IHandler {
 		
 		IMachineRoot mchRoot = getRoot(event);
 		
-		// If a machine is selected, start the animations for it
+		// If a machine is selected, initialise the animations for it
 		if (mchRoot != null) {
 			AnimationManager.startAnimation(mchRoot);
+			// we need to do a restart to actually get started
+			AnimationManager.restartAnimation(mchRoot);
 		}
 
 		return null;
