@@ -129,8 +129,8 @@ public class AnimationManager {
 					participant.restartAnimation(mchRoot);
 				} catch (Exception e) {
 					e.printStackTrace();
-					Activator.logError("Animation manager: Failed to stop Animation Participant " + participant.toString(), e);
-					System.out.println("Animation manager: Failed to stop Animation Participant " + participant.toString());
+					Activator.logError("Animation manager: Failed to restart Animation Participant " + participant.toString(), e);
+					System.out.println("Animation manager: Failed to restart Animation Participant " + participant.toString());
 				}
 			}
 		}
