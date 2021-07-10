@@ -75,13 +75,23 @@
    </extension>
 
    <!-- menu contributions -->
-   <extension
+
+  <extension
          point="org.eclipse.ui.menus">
-         
+
       <!-- toolbar button contributions -->
+      
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="ac.soton.eventb.probsupport.toolbar">
+         </toolbar>
+      </menuContribution>
+ 
       <menuContribution
             allPopups="true"
-            locationURI="toolbar:ac.soton.eventb.emf.diagrams.toolbar?after=animations">
+            locationURI="toolbar:ac.soton.eventb.probsupport.toolbar">
          <command
                commandId="ac.soton.eventb.probsupport.StartAnimation"
                icon="icons/StartAnimation.png"
