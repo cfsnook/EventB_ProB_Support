@@ -121,7 +121,24 @@
          </command>
       </menuContribution>
 
-   	  <!-- toolbar button contributions -->
+   	  <!-- popup menu contributions -->
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:fr.systerel.explorer.navigator.view">
+         <menu
+               icon="icons/RunningMan.png"
+               id="ac.soton.eventb.probsupport.animationMenu"
+               label="%animation.menu"
+               mnemonic="%animation.menu.mnemonic"
+               tooltip="%animation.menu.tooltip">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="ac.soton.umlb.ui.SingleMachineRootSelected">
+               </reference>
+            </visibleWhen>
+         </menu>
+      </menuContribution>
       <menuContribution
             allPopups="true"
             locationURI="popup:ac.soton.eventb.probsupport.animationMenu">
