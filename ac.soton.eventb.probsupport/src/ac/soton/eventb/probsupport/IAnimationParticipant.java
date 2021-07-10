@@ -25,7 +25,9 @@ import org.eventb.core.IMachineRoot;
 public interface IAnimationParticipant {
 
 	/**
-	 * Start a new animation for the given machine root.
+	 * initialise a new animation for the given machine root.
+	 * (Note that this is intended to set things up and get ready for animation,
+	 *   a restart should normally be called after this to actually start animating)
 	 * 
 	 * @param mchRoot
 	 */
