@@ -1,12 +1,15 @@
 /*******************************************************************************
- *  Copyright (c) 2020-2020 University of Southampton.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
- *   
- *  Contributors:
- *  University of Southampton - Initial implementation
+ * Copyright (c) 2020, 2021 University of Southampton.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *    University of Southampton - initial API and implementation
  *******************************************************************************/
 
 package ac.soton.eventb.probsupport;
@@ -129,8 +132,8 @@ public class AnimationManager {
 					participant.restartAnimation(mchRoot);
 				} catch (Exception e) {
 					e.printStackTrace();
-					Activator.logError("Animation manager: Failed to stop Animation Participant " + participant.toString(), e);
-					System.out.println("Animation manager: Failed to stop Animation Participant " + participant.toString());
+					Activator.logError("Animation manager: Failed to restart Animation Participant " + participant.toString(), e);
+					System.out.println("Animation manager: Failed to restart Animation Participant " + participant.toString());
 				}
 			}
 		}

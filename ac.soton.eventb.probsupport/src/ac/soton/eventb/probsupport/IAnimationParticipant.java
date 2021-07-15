@@ -1,12 +1,15 @@
 /*******************************************************************************
- *  Copyright (c) 2020-2020 University of Southampton.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
- *   
- *  Contributors:
- *  University of Southampton - Initial implementation
+ * Copyright (c) 2020, 2021 University of Southampton.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *    University of Southampton - initial API and implementation
  *******************************************************************************/
 
 package ac.soton.eventb.probsupport;
@@ -25,7 +28,9 @@ import org.eventb.core.IMachineRoot;
 public interface IAnimationParticipant {
 
 	/**
-	 * Start a new animation for the given machine root.
+	 * initialise a new animation for the given machine root.
+	 * (Note that this is intended to set things up and get ready for animation,
+	 *   a restart should normally be called after this to actually start animating)
 	 * 
 	 * @param mchRoot
 	 */

@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
+<!--
+    Copyright (c) 2020, 2021 University of Southampton.
+   
+    This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+       University of Southampton - initial API and implementation
+ -->
 <plugin>
 
 	<!-- the extension point for participants to register -->
@@ -75,13 +88,23 @@
    </extension>
 
    <!-- menu contributions -->
-   <extension
+
+  <extension
          point="org.eclipse.ui.menus">
-         
+
       <!-- toolbar button contributions -->
+      
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="ac.soton.eventb.probsupport.toolbar">
+         </toolbar>
+      </menuContribution>
+ 
       <menuContribution
             allPopups="true"
-            locationURI="toolbar:ac.soton.eventb.emf.diagrams.toolbar?after=animations">
+            locationURI="toolbar:ac.soton.eventb.probsupport.toolbar">
          <command
                commandId="ac.soton.eventb.probsupport.StartAnimation"
                icon="icons/StartAnimation.png"
@@ -98,7 +121,24 @@
          </command>
       </menuContribution>
 
-   	  <!-- toolbar button contributions -->
+   	  <!-- popup menu contributions -->
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:fr.systerel.explorer.navigator.view">
+         <menu
+               icon="icons/RunningMan.png"
+               id="ac.soton.eventb.probsupport.animationMenu"
+               label="%animation.menu"
+               mnemonic="%animation.menu.mnemonic"
+               tooltip="%animation.menu.tooltip">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="ac.soton.umlb.ui.SingleMachineRootSelected">
+               </reference>
+            </visibleWhen>
+         </menu>
+      </menuContribution>
       <menuContribution
             allPopups="true"
             locationURI="popup:ac.soton.eventb.probsupport.animationMenu">
